@@ -10,7 +10,18 @@ const ChatWindow = ({ contactId }) => {
   const [newMessage, setNewMessage] = useState('');
   const messagesEndRef = useRef(null);
 
-  const contact = contacts.find(c => c.id === contactId);
+  console.log('ChatWindow - contactId:', contactId, 'Type:', typeof contactId);
+  console.log('Available contacts:', contacts.map(c => ({ id: c.id, name: c.name })));
+
+  // Buscar contacto - manejar diferentes tipos de ID
+  const contact = contacts.find(c => {
+    const contactIdNum = Number(contactId);
+    const currentIdNum = Number(c.id);
+    return contactIdNum === currentIdNum;
+  });
+
+  console.log('Found contact:', contact);
+
   const contactMessages = messages[contactId] || [];
 
   const scrollToBottom = () => {
@@ -41,11 +52,15 @@ const ChatWindow = ({ contactId }) => {
   };
 
   if (!contact) {
+    console.log('Contact not found for ID:', contactId);
     return (
       <div className="chat-window">
         <Header title="Chat no encontrado" showBack onBack={handleBack} />
         <div className="chat-not-found">
-          <p>No se pudo encontrar el chat</p>
+          <p>No se pudo encontrar el chat con ID: {contactId}</p>
+          <button onClick={handleBack} className="back-home-button">
+            Volver al inicio
+          </button>
         </div>
       </div>
     );
@@ -65,6 +80,7 @@ const ChatWindow = ({ contactId }) => {
           <div className="empty-chat">
             <div className="empty-chat__icon">💬</div>
             <p className="empty-chat__text">Envía un mensaje para comenzar la conversación</p>
+            <p className="empty-chat__subtext">Este es el inicio de tu conversación con {contact.name}</p>
           </div>
         )}
         

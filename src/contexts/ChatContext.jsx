@@ -1,5 +1,4 @@
-﻿// src/contexts/ChatContext.jsx
-import React, { createContext, useContext, useState, useEffect } from 'react';
+﻿import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const ChatContext = createContext();
 
@@ -12,92 +11,88 @@ export const useChat = () => {
 };
 
 export const ChatProvider = ({ children }) => {
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState([
+    {
+      id: 1,
+      name: 'Juan Pérez',
+      lastMessage: '¡Hola! ¿Cómo estás?',
+      timestamp: '10:30',
+      unread: 2,
+      online: true,
+      lastSeen: '10:25'
+    },
+    {
+      id: 2,
+      name: 'María García',
+      lastMessage: 'Nos vemos mañana en la oficina',
+      timestamp: '9:15',
+      unread: 0,
+      online: true,
+      lastSeen: '10:15'
+    },
+    {
+      id: 3,
+      name: 'Carlos López',
+      lastMessage: '¿Viste el partido de anoche?',
+      timestamp: 'Ayer',
+      unread: 1,
+      online: false,
+      lastSeen: 'Ayer 22:30'
+    },
+    {
+      id: 4,
+      name: 'Ana Martínez',
+      lastMessage: 'Te envío los documentos',
+      timestamp: 'Ayer',
+      unread: 0,
+      online: true,
+      lastSeen: '10:20'
+    },
+    {
+      id: 5,
+      name: 'Pedro Rodríguez',
+      lastMessage: '👍',
+      timestamp: '07/10',
+      unread: 0,
+      online: false,
+      lastSeen: '06/10 18:45'
+    }
+  ]);
+
   const [messages, setMessages] = useState({});
-  const [currentUser, setCurrentUser] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [currentContact, setCurrentContact] = useState(null);
 
-  // Datos iniciales simulados
+  // Inicializar mensajes para cada contacto
   useEffect(() => {
-    const initialContacts = [
-      {
-        id: '1',
-        name: 'Ana García',
-        lastMessage: '¡Hola! ¿Cómo estás?',
-        timestamp: '10:30 AM',
-        unread: 2,
-        online: true,
-        avatar: '👩'
-      },
-      {
-        id: '2',
-        name: 'Carlos López',
-        lastMessage: 'Nos vemos a las 5',
-        timestamp: '9:15 AM',
-        unread: 0,
-        online: true,
-        avatar: '👨'
-      },
-      {
-        id: '3',
-        name: 'María Rodríguez',
-        lastMessage: '¿Recibiste el documento?',
-        timestamp: 'Ayer',
-        unread: 1,
-        avatar: '👩‍💼'
-      },
-      {
-        id: '4',
-        name: 'Pedro Martínez',
-        lastMessage: 'Gracias por tu ayuda',
-        timestamp: 'Ayer',
-        unread: 0,
-        online: true,
-        avatar: '👨‍🎓'
-      },
-      {
-        id: '5',
-        name: 'Grupo Familia',
-        lastMessage: 'Laura: ¡Feliz cumpleaños!',
-        timestamp: 'Lun',
-        unread: 0,
-        avatar: '👨‍👩‍👧‍👦'
-      }
-    ];
-
     const initialMessages = {
-      '1': [
-        { id: '1', text: '¡Hola! ¿Cómo estás?', sender: '1', timestamp: new Date(Date.now() - 300000) },
-        { id: '2', text: '¡Hola Ana! Estoy bien, gracias. ¿Y tú?', sender: 'me', timestamp: new Date(Date.now() - 240000) },
-        { id: '3', text: 'Todo excelente por aquí. ¿Quedamos mañana?', sender: '1', timestamp: new Date(Date.now() - 180000) }
+      1: [
+        { id: 1, text: '¡Hola! ¿Cómo estás?', sender: 'them', timestamp: '10:30', delivered: true, seen: true },
+        { id: 2, text: '¡Hola Juan! Estoy bien, ¿y tú?', sender: 'me', timestamp: '10:31', delivered: true, seen: true },
+        { id: 3, text: 'Todo excelente por aquí. ¿Qué planes tienes para el fin de semana?', sender: 'them', timestamp: '10:32', delivered: true, seen: true },
+        { id: 4, text: 'Voy a la playa con unos amigos. ¿Te gustaría unirte?', sender: 'me', timestamp: '10:33', delivered: true, seen: false }
       ],
-      '2': [
-        { id: '1', text: 'Nos vemos a las 5', sender: '2', timestamp: new Date(Date.now() - 3600000) },
-        { id: '2', text: 'Perfecto, estaré allí', sender: 'me', timestamp: new Date(Date.now() - 3500000) }
+      2: [
+        { id: 1, text: 'Nos vemos mañana en la oficina para la reunión', sender: 'them', timestamp: '9:15', delivered: true, seen: true },
+        { id: 2, text: 'Perfecto, ahí estaré a las 10:00', sender: 'me', timestamp: '9:16', delivered: true, seen: true },
+        { id: 3, text: 'No olvides traer los reportes', sender: 'them', timestamp: '9:17', delivered: true, seen: true }
       ],
-      '3': [
-        { id: '1', text: '¿Recibiste el documento?', sender: '3', timestamp: new Date(Date.now() - 86400000) },
-        { id: '2', text: 'Sí, ya lo revisé. Todo en orden', sender: 'me', timestamp: new Date(Date.now() - 86000000) }
+      3: [
+        { id: 1, text: '¿Viste el partido de anoche?', sender: 'them', timestamp: 'Ayer', delivered: true, seen: true },
+        { id: 2, text: 'Sí, fue increíble el gol al último minuto', sender: 'me', timestamp: 'Ayer', delivered: true, seen: true },
+        { id: 3, text: 'El equipo está en gran forma esta temporada', sender: 'them', timestamp: 'Ayer', delivered: true, seen: true }
       ]
     };
-
-    setContacts(initialContacts);
     setMessages(initialMessages);
-    setCurrentUser({
-      id: 'me',
-      name: 'Yo',
-      avatar: '😊'
-    });
   }, []);
 
   const sendMessage = (contactId, text) => {
-    if (!text.trim()) return;
-
     const newMessage = {
-      id: Date.now().toString(),
-      text: text.trim(),
+      id: Date.now(),
+      text,
       sender: 'me',
-      timestamp: new Date()
+      timestamp: new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }),
+      delivered: true,
+      seen: false
     };
 
     setMessages(prev => ({
@@ -105,26 +100,53 @@ export const ChatProvider = ({ children }) => {
       [contactId]: [...(prev[contactId] || []), newMessage]
     }));
 
-    // Actualizar último mensaje en el contacto
-    setContacts(prev => 
-      prev.map(contact => 
+    // Simular respuesta automática después de 2 segundos
+    setTimeout(() => {
+      const responses = [
+        '¡Interesante!',
+        '¿En serio?',
+        'Jajaja 😄',
+        'Claro que sí',
+        'Te entiendo',
+        '¿Y luego qué pasó?'
+      ];
+      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+      
+      const responseMessage = {
+        id: Date.now() + 1,
+        text: randomResponse,
+        sender: 'them',
+        timestamp: new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }),
+        delivered: true,
+        seen: false
+      };
+
+      setMessages(prev => ({
+        ...prev,
+        [contactId]: [...(prev[contactId] || []), responseMessage]
+      }));
+
+      // Actualizar último mensaje en el contacto
+      setContacts(prev => prev.map(contact => 
         contact.id === contactId 
-          ? { ...contact, lastMessage: text, timestamp: 'Ahora' }
+          ? { ...contact, lastMessage: randomResponse, timestamp: responseMessage.timestamp }
           : contact
-      )
-    );
+      ));
+    }, 2000);
+
+    // Actualizar último mensaje en el contacto
+    setContacts(prev => prev.map(contact => 
+      contact.id === contactId 
+        ? { ...contact, lastMessage: text, timestamp: newMessage.timestamp }
+        : contact
+    ));
   };
 
-  const filteredContacts = contacts.filter(contact =>
-    contact.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   const value = {
-    contacts: filteredContacts,
+    contacts,
     messages,
-    currentUser,
-    searchTerm,
-    setSearchTerm,
+    currentContact,
+    setCurrentContact,
     sendMessage
   };
 

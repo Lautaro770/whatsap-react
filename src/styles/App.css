@@ -1,4 +1,4 @@
-﻿/* ===== RESET Y VARIABLES ===== */
+﻿  /* ===== RESET Y VARIABLES ===== */
 :root {
   /* Colores WhatsApp oficiales */
   --whatsapp-green: #00a884;
@@ -720,28 +720,45 @@ body {
   opacity: 0.7;
 }
 
-/* ===== RESPONSIVE DESIGN ===== */
+/* ===== RESPONSIVE OPTIMIZADO - PC Y CELULAR ===== */
 
-/* Pantallas grandes (Desktop) */
+/* PC GRANDE (1200px+) - Layout elegante */
 @media (min-width: 1200px) {
   .home {
     height: 90vh;
     margin: 2.5rem auto;
-    border-radius: 0.75rem;
+    border-radius: 1rem;
     overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
   }
   
   .home__sidebar {
     min-width: 25rem;
   }
+  
+  .home__welcome {
+    padding: 2rem;
+  }
+  
+  .welcome-message h1 {
+    font-size: 2.75rem;
+  }
+  
+  .chat-list__header {
+    padding: 2rem 1.5rem 1.5rem;
+  }
+  
+  .chat-list__header h2 {
+    font-size: 1.5rem;
+  }
 }
 
-/* Tablets */
-@media (max-width: 1199px) and (min-width: 769px) {
+/* PC MEDIANO (1024px - 1199px) */
+@media (min-width: 1024px) and (max-width: 1199px) {
   .home {
     height: 95vh;
-    margin: 1.25rem auto;
+    margin: 1rem auto;
+    max-width: 1400px;
   }
   
   .home__sidebar {
@@ -749,15 +766,44 @@ body {
   }
   
   .message {
+    max-width: 70%;
+  }
+}
+
+/* TABLET (769px - 1023px) */
+@media (min-width: 769px) and (max-width: 1023px) {
+  .home {
+    height: 100vh;
+    margin: 0 auto;
+    border-radius: 0;
+  }
+  
+  .home__sidebar {
+    min-width: 20rem;
+  }
+  
+  .home__welcome {
+    display: flex;
+  }
+  
+  .welcome-message {
+    padding: 0 2rem;
+  }
+  
+  .welcome-message h1 {
+    font-size: 2rem;
+  }
+  
+  .message {
     max-width: 75%;
   }
 }
 
-/* Móviles */
+/* MÓVIL GRANDE (481px - 768px) */
 @media (max-width: 768px) {
   body {
     background: var(--bg-primary);
-    overflow: auto;
+    overflow: hidden;
   }
   
   body::before,
@@ -789,6 +835,7 @@ body {
   
   .chat-list__header {
     padding: 1.25rem 1rem 1rem;
+    padding-top: max(1.25rem, env(safe-area-inset-top));
   }
   
   .search-bar {
@@ -799,56 +846,10 @@ body {
     padding: 0.875rem 1rem;
   }
   
-  /* Chat en pantalla completa en móvil */
-  .chat-window {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1000;
-    animation: slideInRight 0.3s ease-out;
-  }
-  
-  @keyframes slideInRight {
-    from {
-      transform: translateX(100%);
-    }
-    to {
-      transform: translateX(0);
-    }
-  }
-  
-  .chat-header {
-    padding: 0.75rem 1rem;
-    min-height: 4.25rem;
-  }
-  
-  .chat-messages {
-    padding: 1rem;
-  }
-  
-  .message-input-form {
-    padding: 0.75rem 1rem;
-  }
-  
-  .message {
-    max-width: 85%;
-  }
-  
-  .avatar {
+  .contact-item__avatar .avatar {
     width: 3rem;
     height: 3rem;
     font-size: 1.1rem;
-  }
-}
-
-/* Móviles pequeños */
-@media (max-width: 480px) {
-  .contact-item__avatar .avatar {
-    width: 2.75rem;
-    height: 2.75rem;
-    font-size: 1rem;
   }
   
   .contact-item__name {
@@ -859,12 +860,58 @@ body {
     font-size: 0.81rem;
   }
   
+  /* CHAT EN PANTALLA COMPLETA */
+  .chat-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 1000;
+    animation: slideInFromRight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  @keyframes slideInFromRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  .chat-window {
+    height: 100vh;
+  }
+  
+  .chat-header {
+    padding: 0.75rem 1rem;
+    min-height: 4.25rem;
+    padding-top: max(0.75rem, env(safe-area-inset-top));
+  }
+  
   .chat-header__title {
     font-size: 0.94rem;
   }
   
+  .chat-messages {
+    padding: 1rem;
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+  
+  .message-input-form {
+    padding: 0.75rem 1rem;
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  }
+  
+  .message {
+    max-width: 85%;
+  }
+  
   .message__bubble {
-    padding: 0.44rem 0.625rem 0.5rem;
+    padding: 0.5rem 0.75rem 0.55rem;
   }
   
   .message__text {
@@ -873,15 +920,24 @@ body {
   
   .message-input {
     padding: 0.75rem 1rem;
-    font-size: 0.875rem;
+    font-size: 1rem;
+  }
+  
+  /* Botones táctiles optimizados */
+  .back-button,
+  .header-button,
+  .send-button {
+    min-width: 2.75rem;
+    min-height: 2.75rem;
   }
   
   .empty-chat__icon {
-    font-size: 3.5rem;
+    font-size: 3rem;
   }
   
   .empty-chat__text {
     font-size: 0.875rem;
+    max-width: 14rem;
   }
   
   .empty-chat__subtext {
@@ -889,14 +945,100 @@ body {
   }
 }
 
-/* Pantallas extra grandes */
+/* MÓVIL PEQUEÑO (0 - 480px) */
+@media (max-width: 480px) {
+  .contact-item {
+    padding: 0.75rem 0.875rem;
+  }
+  
+  .contact-item__avatar .avatar {
+    width: 2.75rem;
+    height: 2.75rem;
+    font-size: 1rem;
+  }
+  
+  .contact-item__name {
+    font-size: 0.94rem;
+  }
+  
+  .contact-item__message {
+    font-size: 0.78rem;
+  }
+  
+  .contact-item__time {
+    font-size: 0.69rem;
+  }
+  
+  .chat-header {
+    padding: 0.625rem 0.875rem;
+    min-height: 3.75rem;
+  }
+  
+  .chat-header__title {
+    font-size: 0.91rem;
+  }
+  
+  .chat-messages {
+    padding: 0.875rem;
+  }
+  
+  .message {
+    max-width: 90%;
+  }
+  
+  .message__bubble {
+    padding: 0.44rem 0.625rem 0.5rem;
+  }
+  
+  .message__text {
+    font-size: 0.84rem;
+  }
+  
+  .message-input {
+    padding: 0.625rem 0.875rem;
+    font-size: 1rem;
+  }
+  
+  .empty-chat__icon {
+    font-size: 2.5rem;
+  }
+  
+  .empty-chat__text {
+    font-size: 0.81rem;
+    max-width: 12rem;
+  }
+  
+  .empty-chat__subtext {
+    font-size: 0.69rem;
+  }
+}
+
+/* PC EXTRA GRANDE (1600px+) */
 @media (min-width: 1600px) {
   .home {
-    max-width: 112.5rem;
+    max-width: 1800px;
   }
   
   .home__sidebar {
     min-width: 28rem;
+  }
+  
+  .chat-list__header {
+    padding: 2.5rem 2rem 1.5rem;
+  }
+  
+  .chat-list__header h2 {
+    font-size: 1.75rem;
+  }
+  
+  .contact-item {
+    padding: 1rem 1.5rem;
+  }
+  
+  .avatar {
+    width: 3.75rem;
+    height: 3.75rem;
+    font-size: 1.3rem;
   }
 }
 
@@ -905,7 +1047,6 @@ body {
   @media (max-width: 768px) {
     .chat-header {
       padding-top: max(0.75rem, env(safe-area-inset-top));
-      padding-bottom: 0.75rem;
     }
     
     .message-input-form {
@@ -928,12 +1069,5 @@ body {
   :root {
     --border-color: #ffffff;
     --text-secondary: #ffffff;
-  }
-}
-
-/* Modo oscuro forzado */
-@media (prefers-color-scheme: dark) {
-  body {
-    background: var(--bg-primary);
   }
 }

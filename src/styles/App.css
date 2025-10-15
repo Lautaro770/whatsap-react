@@ -1,304 +1,289 @@
-﻿ /* ===================== ROOT Y APP ===================== */
-:root {
-  --whatsapp-green: #00a884;
-  --whatsapp-dark-green: #005c4b;
-  --whatsapp-light-green: #25d366;
-  --bg-primary: #111b21;
-  --bg-secondary: #202c33;
-  --bg-tertiary: #2a3942;
-  --bg-chat: #0b141a;
-  --text-primary: #e9edef;
-  --text-secondary: #8696a0;
-  --text-muted: #667781;
-  --border-color: #2d3941;
-  --online-indicator: #25d366;
-  --unread-badge: #25d366;
+﻿/* =========================
+   WHATSAPP-WEB (DARK) - CSS
+   Identico visualmente, organizado por secciones
+   ========================= */
+
+/* ---------- :root (colores) ---------- */
+:root{
+  --wa-green: #00a884;
+  --wa-dark-green: #005c4b;
+  --wa-light-green: #25d366;
+  --bg-0: #0b1416;    /* fondo chat */
+  --bg-1: #111b21;    /* fondo app */
+  --bg-2: #202c33;    /* panel lateral / header */
+  --bg-3: #2a3942;    /* burbuja clara */
+  --text-1: #e9edef;  /* texto principal */
+  --text-2: #8696a0;  /* secundario */
+  --muted: #667781;
+  --border: #2d3941;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* ---------- RESET / BASE ---------- */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body,#root{height:100%}
+body{
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  background:var(--bg-1);
+  color:var(--text-1);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 
-body {
-  font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* ---------- CONTAINERS (compatibilidad nombres) ---------- */
+#root, .App, .app-container {
+  width:95%;
+  max-width:1400px;
+  height:90vh;
+  border-radius:8px;
+  overflow:hidden;
+  box-shadow:0 12px 34px rgba(0,0,0,0.45);
+  background:var(--bg-1);
+  display:flex;
 }
 
-#root,
-.App {
-  width: 95%;
-  max-width: 1400px;
-  height: 90vh;
-  display: flex;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  background-color: var(--bg-primary);
+/* preferidos por este proyecto */
+.home, .app-container { width:100%; display:flex; }
+
+/* ---------- SIDEBAR / LISTA DE CONTACTOS ---------- */
+.home__sidebar,
+.sidebar {
+  width:32%;
+  min-width:360px;
+  background:var(--bg-2);
+  border-right:1px solid var(--border);
+  display:flex;
+  flex-direction:column;
 }
 
-/* ===================== SIDEBAR ===================== */
-.home__sidebar {
-  width: 30%;
-  min-width: 380px;
-  background-color: var(--bg-secondary);
-  display: flex;
-  flex-direction: column;
-  border-right: 1px solid var(--border-color);
+/* header de la lista */
+.chat-list__header, .sidebar-header {
+  padding:18px 20px;
+  background:var(--bg-2);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
 
-/* ----- HEADER DE CONTACTOS ----- */
-.chat-list__header {
-  padding: 20px;
-  background-color: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-color);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* buscador */
+.search-bar, .sidebar-search {
+  padding:10px 16px;
+  background:var(--bg-2);
+  border-bottom:1px solid var(--border);
+}
+.search-input, .input-search {
+  width:100%;
+  padding:10px 14px;
+  border-radius:20px;
+  border:none;
+  background:var(--bg-3);
+  color:var(--text-1);
+  font-size:14px;
+}
+.search-input::placeholder{ color:var(--text-2) }
+
+/* lista */
+.chat-list__contacts, .contacts-list {
+  flex:1;
+  overflow-y:auto;
+  background:var(--bg-1);
+  padding:6px 0;
 }
 
-/* ----- BARRA DE BÚSQUEDA ----- */
-.search-bar {
-  padding: 10px 15px;
-  background-color: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-color);
+/* item contacto */
+.contact-item, .contact-row, .contacts-list a {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 16px;
+  text-decoration:none;
+  color:inherit;
+  border-bottom:1px solid rgba(45,57,65,0.6);
+  transition:background .15s, transform .08s;
+}
+.contact-item:hover, .contact-row:hover { background:var(--bg-2); transform:translateX(2px) }
+
+/* avatar */
+.contact-item__avatar, .avatar-wrap {
+  position:relative;
+  width:56px;
+  height:56px;
+  flex:0 0 56px;
+}
+.avatar, .avatar-circle {
+  width:56px;height:56px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:18px;color:#fff;
+  background:linear-gradient(135deg,var(--wa-green) 0%, var(--wa-light-green) 100%);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
 }
 
-.search-input {
-  width: 100%;
-  padding: 10px 15px;
-  border-radius: 20px;
-  border: none;
-  background-color: var(--bg-tertiary);
-  color: var(--text-primary);
-  font-size: 14px;
+/* online dot */
+.online-indicator, .status-dot {
+  position:absolute; right:4px; bottom:4px;
+  width:14px;height:14px;border-radius:50%;
+  background:var(--wa-light-green); border:2px solid var(--bg-2);
 }
 
-.search-input::placeholder {
-  color: var(--text-secondary);
+/* info */
+.contact-item__info, .contact-meta { flex:1; min-width:0; display:flex; flex-direction:column; gap:6px; }
+.contact-item__header { display:flex; align-items:center; justify-content:space-between; gap:8px }
+.contact-item__name { font-size:16px; font-weight:600; color:var(--text-1); white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.contact-item__time { font-size:12px; color:var(--text-2); flex:0 0 auto }
+.contact-item__message { font-size:13px; color:var(--text-2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+
+/* ---------- AREA DE CHAT / VENTANA ---------- */
+.chat-window, .main-chat, .chat-container {
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  background:var(--bg-0);
 }
 
-/* ----- LISTA DE CONTACTOS ----- */
-.chat-list__contacts {
-  flex: 1;
-  overflow-y: auto;
+/* chat header (arriba) */
+.chat-header, .chat-top {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 16px;
+  background:var(--bg-2);
+  border-bottom:1px solid var(--border);
+  position:sticky; top:0; z-index:30;
+}
+.chat-header__left { display:flex; align-items:center; gap:12px }
+.chat-header__title { font-weight:600; font-size:16px; color:var(--text-1) }
+.chat-header__status { font-size:13px; color:var(--text-2) }
+
+/* icon buttons header */
+.header-actions, .header-icons { margin-left:auto; display:flex; gap:8px }
+.header-button, .icon-btn {
+  background:transparent;border:none;color:var(--text-2);cursor:pointer;padding:8px;border-radius:8px;
+}
+.header-button:hover, .icon-btn:hover { background:var(--bg-3); color:var(--text-1) }
+
+/* chat messages (scrollable) */
+.chat-messages, .messages-list {
+  flex:1;
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  overflow-y:auto;
+  background-image: radial-gradient(circle at 10px 10px, rgba(255,255,255,0.01) 1px, transparent 1px);
+  background-size: 80px 80px;
 }
 
-.contact-item {
-  display: flex;
-  align-items: center;
-  padding: 12px 15px;
-  border-bottom: 1px solid var(--border-color);
-  cursor: pointer;
-  text-decoration: none;
-  color: inherit;
-  transition: background 0.2s;
+/* mensaje base */
+.message, .msg {
+  max-width:72%;
+  padding:10px 12px;
+  border-radius:12px;
+  word-break:break-word;
+  line-height:1.4;
+  font-size:14px;
+  position:relative;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.25);
 }
 
-.contact-item:hover {
-  background-color: var(--bg-primary);
+/* mensaje mio */
+.message--me, .msg.me {
+  align-self:flex-end;
+  background: linear-gradient(180deg, var(--wa-dark-green) 0%, #0d6b57 100%);
+  color:var(--text-1);
+  border-bottom-right-radius:2px;
 }
 
-/* Avatar */
-.contact-item__avatar {
-  margin-right: 15px;
-  position: relative;
+/* mensaje otro */
+.message--them, .msg.them {
+  align-self:flex-start;
+  background:var(--bg-2);
+  color:var(--text-1);
+  border-bottom-left-radius:2px;
 }
 
-.avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--whatsapp-green) 0%, var(--whatsapp-light-green) 100%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-weight: bold;
-  font-size: 18px;
+/* burbuja "triangulo" */
+.message--me::after, .msg.me::after {
+  content:"";
+  position:absolute;
+  right:-6px;
+  bottom:0;
+  width:0;height:0;
+  border-left:6px solid var(--wa-dark-green);
+  border-top:6px solid transparent;
+  border-bottom:0 solid transparent;
+}
+.message--them::after, .msg.them::after {
+  content:"";
+  position:absolute;
+  left:-6px;
+  bottom:0;
+  width:0;height:0;
+  border-right:6px solid var(--bg-2);
+  border-top:6px solid transparent;
+  border-bottom:0 solid transparent;
 }
 
-.online-indicator {
-  position: absolute;
-  bottom: 2px;
-  right: 2px;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background-color: var(--online-indicator);
-  border: 2px solid var(--bg-secondary);
+/* hora pequeña */
+.message-time, .msg-time {
+  display:block;
+  font-size:11px;
+  color:var(--text-2);
+  margin-top:6px;
+  text-align:right;
 }
 
-/* Info de contacto */
-.contact-item__info {
-  flex: 1;
-  min-width: 0;
+/* ---------- INPUT AREA ---------- */
+.message-input-form, .composer {
+  display:flex;
+  gap:10px;
+  padding:12px 16px;
+  align-items:center;
+  background:var(--bg-2);
+  border-top:1px solid var(--border);
+}
+.message-input, .composer-input {
+  flex:1;
+  padding:10px 14px;
+  border-radius:22px;
+  border:none;
+  background:var(--bg-0);
+  color:var(--text-1);
+  font-size:14px;
+  outline:none;
+}
+.send-button, .btn-send {
+  background:linear-gradient(180deg,var(--wa-green),var(--wa-dark-green));
+  color:#fff;border:none;
+  width:44px;height:44px;border-radius:50%;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+  box-shadow: 0 4px 10px rgba(3, 73, 54, 0.18);
+}
+.send-button:active { transform:scale(.97) }
+
+/* ---------- SCROLLBAR ESTILO ---------- */
+.chat-messages::-webkit-scrollbar, .chat-list__contacts::-webkit-scrollbar {
+  width:8px;
+}
+.chat-messages::-webkit-scrollbar-thumb, .chat-list__contacts::-webkit-scrollbar-thumb {
+  background:linear-gradient(180deg,var(--border),#3a454c);
+  border-radius:8px;
+}
+.chat-messages::-webkit-scrollbar-track, .chat-list__contacts::-webkit-scrollbar-track {
+  background:transparent;
 }
 
-.contact-item__name {
-  font-weight: 500;
-  color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* ---------- RESPONSIVE (movil) ---------- */
+@media (max-width: 900px) {
+  .home__sidebar, .sidebar { width:100%; min-width:auto; }
+  #root, .App { height:100vh; width:100%; border-radius:0; }
+  .chat-messages { padding:12px }
+  .message { max-width:86% }
+  .contact-item { padding:10px 12px }
 }
 
-.contact-item__message {
-  font-size: 13px;
-  color: var(--text-secondary);
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-/* ===================== VENTANA DE CHAT ===================== */
-.chat-window {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--bg-chat);
-}
-
-/* ----- HEADER DEL CHAT ----- */
-.chat-header {
-  padding: 12px 16px;
-  background-color: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-color);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-}
-
-.chat-header__title {
-  font-weight: 600;
-  font-size: 16px;
-  color: var(--text-primary);
-}
-
-.chat-header__status {
-  font-size: 13px;
-  color: var(--text-secondary);
-}
-
-/* ----- MENSAJES ----- */
-.chat-messages {
-  flex: 1;
-  padding: 15px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.message {
-  max-width: 70%;
-  padding: 10px 14px;
-  border-radius: 12px;
-  position: relative;
-  word-wrap: break-word;
-  line-height: 1.4;
-  font-size: 14px;
-}
-
-.message--me {
-  align-self: flex-end;
-  background-color: var(--whatsapp-dark-green);
-  color: var(--text-primary);
-  border-bottom-right-radius: 0;
-}
-
-.message--them {
-  align-self: flex-start;
-  background-color: var(--bg-secondary);
-  color: var(--text-primary);
-  border-bottom-left-radius: 0;
-}
-
-/* ----- INPUT DE MENSAJES ----- */
-.message-input-form {
-  display: flex;
-  gap: 10px;
-  padding: 10px 15px;
-  background-color: var(--bg-secondary);
-  border-top: 1px solid var(--border-color);
-}
-
-.message-input {
-  flex: 1;
-  padding: 10px 14px;
-  border-radius: 20px;
-  border: none;
-  background-color: var(--bg-tertiary);
-  color: var(--text-primary);
-  font-size: 14px;
-}
-
-.send-button {
-  background-color: var(--whatsapp-green);
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-size: 18px;
-}
-
-/* ===================== SCROLLBARS ===================== */
-.chat-messages::-webkit-scrollbar,
-.chat-list__contacts::-webkit-scrollbar {
-  width: 6px;
-}
-
-.chat-messages::-webkit-scrollbar-track,
-.chat-list__contacts::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.chat-messages::-webkit-scrollbar-thumb,
-.chat-list__contacts::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 3px;
-}
-
-.chat-messages::-webkit-scrollbar-thumb:hover,
-.chat-list__contacts::-webkit-scrollbar-thumb:hover {
-  background: var(--text-secondary);
-}
-
-/* ===================== RESPONSIVE ===================== */
-@media (max-width: 768px) {
-  #root,
-  .App {
-    width: 100%;
-    height: 100vh;
-    flex-direction: column;
-    border-radius: 0;
-  }
-
-  .home__sidebar {
-    width: 100%;
-    min-width: auto;
-  }
-
-  .chat-window {
-    height: 100%;
-  }
-
-  .message {
-    max-width: 85%;
-  }
-}
+/* ---------- UTILS ---------- */
+.hidden { display:none !important }
+.center { display:flex; align-items:center; justify-content:center }

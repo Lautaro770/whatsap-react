@@ -36,9 +36,6 @@ function AppContent() {
     return 'app mobile-' + mobileView + '-view';
   };
 
-  // Verificar si hay chat seleccionado
-  const isChatSelected = location.pathname.startsWith('/chat/');
-
   return (
     <div className={getAppClassName()}>
       {/* Barra de navegación lateral - solo en desktop */}
@@ -53,34 +50,11 @@ function AppContent() {
           </div>
         )}
         
-        {/* Área derecha: Chat o Panel "selecciona un chat" */}
+        {/* Panel derecho - Solo muestra Chat cuando hay uno seleccionado */}
         <div className="right-panel">
           <Routes>
             <Route path="/chat/:id" element={<Chat />} />
-            <Route path="/" element={
-              !isMobile ? (
-                <div className="no-chat-selected-panel">
-                  <div className="no-chat-content">
-                    <div className="no-chat-icon">💬</div>
-                    <h2>WhatsApp Web</h2>
-                    <p>Envía y recibe mensajes sin necesidad de tener tu teléfono conectado.</p>
-                    <div className="no-chat-features">
-                      <div className="feature">
-                        <span>🔒</span>
-                        <span>Usa WhatsApp en hasta 4 dispositivos vinculados y 1 teléfono a la vez.</span>
-                      </div>
-                      <div className="feature">
-                        <span>🖥️</span>
-                        <span>Experimenta una app de escritorio rápida y sincronizada.</span>
-                      </div>
-                    </div>
-                    <div className="no-chat-footer">
-                      <span>Tu información personal está protegida con cifrado de extremo a extremo.</span>
-                    </div>
-                  </div>
-                </div>
-              ) : null
-            } />
+            <Route path="/" element={null} />
           </Routes>
         </div>
       </div>

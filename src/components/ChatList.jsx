@@ -1,9 +1,18 @@
 ﻿import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useChat } from '../contexts/ChatContext';
 
 const ChatList = () => {
-  // CORREGIDO: Usar 'chats' directamente en lugar de 'getFilteredChats'
-  const { chats, setCurrentChat, searchTerm } = useChat();
+  const { chats, setCurrentChat } = useChat();
+  const navigate = useNavigate();
+
+  const handleChatClick = (chat) => {
+    console.log('🎯 Chat clickeado:', chat.name, 'ID:', chat.id);
+    // 1. Establecer el chat actual en el contexto
+    setCurrentChat(chat);
+    // 2. Navegar a la ruta del chat
+    navigate(`/chat/${chat.id}`);
+  };
 
   return (
     <div className="chat-list">
@@ -12,7 +21,7 @@ const ChatList = () => {
           <div 
             key={chat.id} 
             className="contact-item"
-            onClick={() => setCurrentChat(chat)}
+            onClick={() => handleChatClick(chat)}
           >
             <div className="contact-avatar">
               {chat.avatar}
@@ -28,7 +37,7 @@ const ChatList = () => {
         ))
       ) : (
         <div className="no-chats">
-          {searchTerm ? 'No se encontraron chats' : 'No hay chats disponibles'}
+          No hay chats disponibles
         </div>
       )}
     </div>

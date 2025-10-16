@@ -16,11 +16,11 @@ function AppContent() {
       const mobile = window.innerWidth <= 768;
       setIsMobile(mobile);
       
-      // Reset mobileView cuando cambia de móvil a desktop
+      // Reset mobileView cuando cambia de celular a desktop
       if (!mobile) {
         setMobileView('list');
       } else {
-        // En móvil, determinar la vista basada en la ruta actual
+        // En celular, determinar la vista basada en la ruta actual
         if (location.pathname === '/') {
           setMobileView('list');
         } else if (location.pathname.startsWith('/chat/')) {
@@ -72,7 +72,7 @@ function AppContent() {
         <div className="right-panel">
           <Routes>
             <Route path="/chat/:id" element={<Chat />} />
-            <Route path="/" element={null} />
+            <Route path="/" element={<main/>} />
           </Routes>
         </div>
       </div>

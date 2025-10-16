@@ -14,296 +14,176 @@ export const ChatProvider = ({ children }) => {
   const [chats, setChats] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [isLoaded, setIsLoaded] = useState(false);
 
-  // Datos iniciales mock - MEJORADO
+  // TODOS los chats originales - COMPLETOS
   const initialChats = [
     {
       id: '1',
       name: 'Juan Pérez',
       avatar: 'JP',
-      lastSeen: '2024-01-15T10:30:00',
-      isOnline: true,
       lastMessage: 'Hola, ¿cómo estás?',
-      lastMessageTime: '2024-01-15T10:30:00',
+      timestamp: '10:30 AM',
       messages: [
-        {
-          id: '1',
-          text: 'Hola, ¿cómo estás?',
-          timestamp: '2024-01-15T10:30:00',
-          isSent: false,
-          isRead: true
-        },
-        {
-          id: '2',
-          text: '¡Hola Juan! Estoy bien, ¿y tú?',
-          timestamp: '2024-01-15T10:32:00',
-          isSent: true,
-          isRead: true
-        }
+        { id: '1-1', text: 'Hola, ¿cómo estás?', timestamp: '10:30 AM', isSent: false },
+        { id: '1-2', text: '¡Hola Juan! Estoy bien', timestamp: '10:32 AM', isSent: true }
       ]
     },
     {
       id: '2',
-      name: 'María García',
+      name: 'María García', 
       avatar: 'MG',
-      lastSeen: '2024-01-15T09:15:00',
-      isOnline: false,
       lastMessage: '¿Quedamos esta tarde?',
-      lastMessageTime: '2024-01-15T09:15:00',
+      timestamp: '09:15 AM',
       messages: [
-        {
-          id: '1',
-          text: '¿Quedamos esta tarde?',
-          timestamp: '2024-01-15T09:15:00',
-          isSent: false,
-          isRead: true
-        }
+        { id: '2-1', text: '¿Quedamos esta tarde?', timestamp: '09:15 AM', isSent: false }
       ]
     },
     {
       id: '3',
       name: 'Carlos López',
-      avatar: 'CL',
-      lastSeen: '2024-01-14T22:45:00',
-      isOnline: true,
+      avatar: 'CL', 
       lastMessage: 'Te envío el documento',
-      lastMessageTime: '2024-01-14T22:45:00',
+      timestamp: 'Ayer',
       messages: [
-        {
-          id: '1',
-          text: 'Te envío el documento',
-          timestamp: '2024-01-14T22:45:00',
-          isSent: false,
-          isRead: true
-        },
-        {
-          id: '2',
-          text: 'Perfecto, lo reviso ahora',
-          timestamp: '2024-01-14T22:46:00',
-          isSent: true,
-          isRead: true
-        }
+        { id: '3-1', text: 'Te envío el documento', timestamp: 'Ayer', isSent: false },
+        { id: '3-2', text: 'Perfecto, lo reviso', timestamp: 'Ayer', isSent: true }
       ]
     },
     {
       id: '4',
       name: 'Ana Martínez',
       avatar: 'AM',
-      lastSeen: '2024-01-16T14:20:00',
-      isOnline: true,
       lastMessage: '¿Viste la nueva película?',
-      lastMessageTime: '2024-01-16T14:20:00',
+      timestamp: 'Ayer',
       messages: [
-        {
-          id: '1',
-          text: '¿Viste la nueva película?',
-          timestamp: '2024-01-16T14:20:00',
-          isSent: false,
-          isRead: true
-        },
-        {
-          id: '2', 
-          text: 'Sí, ¡estuvo increíble!',
-          timestamp: '2024-01-16T14:25:00',
-          isSent: true,
-          isRead: true
-        },
-        {
-          id: '3',
-          text: 'Tenemos que ir juntos la próxima',
-          timestamp: '2024-01-16T14:26:00',
-          isSent: false,
-          isRead: true
-        }
+        { id: '4-1', text: '¿Viste la nueva película?', timestamp: 'Ayer', isSent: false },
+        { id: '4-2', text: 'Sí, ¡estuvo increíble!', timestamp: 'Ayer', isSent: true },
+        { id: '4-3', text: 'Tenemos que ir juntos la próxima', timestamp: 'Ayer', isSent: false }
       ]
     },
     {
       id: '5',
       name: 'Pedro Rodríguez',
       avatar: 'PR',
-      lastSeen: '2024-01-16T11:30:00',
-      isOnline: false,
       lastMessage: '¿Pasaste por el material de estudio?',
-      lastMessageTime: '2024-01-16T11:30:00',
+      timestamp: 'Ayer',
       messages: [
-        {
-          id: '1',
-          text: '¿Pasaste por el material de estudio?',
-          timestamp: '2024-01-16T11:30:00',
-          isSent: false,
-          isRead: true
-        },
-        {
-          id: '2',
-          text: 'Sí, lo tengo todo listo para el examen',
-          timestamp: '2024-01-16T11:35:00',
-          isSent: true,
-          isRead: true
-        }
+        { id: '5-1', text: '¿Pasaste por el material de estudio?', timestamp: 'Ayer', isSent: false },
+        { id: '5-2', text: 'Sí, lo tengo todo listo para el examen', timestamp: 'Ayer', isSent: true }
+      ]
+    },
+    {
+      id: '6',
+      name: 'Laura Fernández',
+      avatar: 'LF',
+      lastMessage: '¡Feliz cumpleaños! 🎉',
+      timestamp: '15/10',
+      messages: [
+        { id: '6-1', text: '¡Feliz cumpleaños! 🎉', timestamp: '15/10', isSent: false },
+        { id: '6-2', text: '¡Muchas gracias! ¿Vienes a la fiesta?', timestamp: '15/10', isSent: true },
+        { id: '6-3', text: '¡Claro que sí! Llego a las 20:00', timestamp: '15/10', isSent: false }
+      ]
+    },
+    {
+      id: '7',
+      name: 'Diego Silva',
+      avatar: 'DS',
+      lastMessage: '¿Terminaste el proyecto?',
+      timestamp: '15/10',
+      messages: [
+        { id: '7-1', text: '¿Terminaste el proyecto?', timestamp: '15/10', isSent: false },
+        { id: '7-2', text: 'Casi, me falta solo la documentación', timestamp: '15/10', isSent: true },
+        { id: '7-3', text: 'Perfecto, envíamelo cuando esté listo', timestamp: '15/10', isSent: false }
       ]
     }
   ];
 
-  // Cargar chats - SIMPLIFICADO para evitar errores
+  // Cargar datos inmediatamente - SIN console.log
   useEffect(() => {
-    console.log('🔄 Cargando chats...');
-    try {
-      // Usar datos iniciales directamente, sin localStorage en producción
-      setChats(initialChats);
-      setIsLoaded(true);
-      console.log('✅ Chats cargados correctamente');
-    } catch (error) {
-      console.error('❌ Error cargando chats:', error);
-      setChats([]);
-      setIsLoaded(true);
-    }
+    setChats(initialChats);
   }, []);
 
-  // Función sendMessage - CON MÁS VERIFICACIONES
+  // Función sendMessage - SIN console.log
   const sendMessage = (chatId, messageText) => {
-    console.log('📤 Enviando mensaje a chat:', chatId, messageText);
-    
-    if (!messageText || !messageText.trim()) {
-      console.log('⚠️ Mensaje vacío, no se envía');
-      return;
-    }
+    if (!messageText || !messageText.trim()) return;
 
-    try {
-      const newMessage = {
-        id: Date.now().toString(),
-        text: messageText.trim(),
-        timestamp: new Date().toISOString(),
-        isSent: true,
-        isRead: false
+    const newMessage = {
+      id: `msg-${Date.now()}`,
+      text: messageText.trim(),
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      isSent: true
+    };
+
+    // Actualizar chats
+    const updatedChats = chats.map(chat => {
+      if (chat.id === chatId) {
+        return {
+          ...chat,
+          messages: [...chat.messages, newMessage],
+          lastMessage: messageText,
+          timestamp: 'Ahora'
+        };
+      }
+      return chat;
+    });
+
+    setChats(updatedChats);
+
+    // Respuesta automática
+    setTimeout(() => {
+      const responses = [
+        '¡Claro! Estoy revisando tu mensaje.',
+        'Perfecto, te respondo en un momento.',
+        'Interesante, déjame pensarlo.',
+        '¡Genial! Me alegra saber eso.',
+        'Entendido, gracias por la información.'
+      ];
+      
+      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+      
+      const autoReply = {
+        id: `msg-${Date.now() + 1}`,
+        text: randomResponse,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        isSent: false
       };
 
-      setChats(prevChats => {
-        if (!prevChats || !Array.isArray(prevChats)) {
-          console.log('📝 No hay chats previos, usando iniciales');
-          return initialChats.map(chat => 
-            chat.id === chatId 
-              ? {
-                  ...chat,
-                  messages: [...chat.messages, newMessage],
-                  lastMessage: messageText,
-                  lastMessageTime: new Date().toISOString()
-                }
-              : chat
-          );
+      const finalChats = updatedChats.map(chat => {
+        if (chat.id === chatId) {
+          return {
+            ...chat,
+            messages: [...chat.messages, autoReply],
+            lastMessage: randomResponse,
+            timestamp: 'Ahora'
+          };
         }
-
-        return prevChats.map(chat => {
-          if (chat.id === chatId) {
-            const updatedMessages = [...(chat.messages || []), newMessage];
-            return {
-              ...chat,
-              messages: updatedMessages,
-              lastMessage: messageText,
-              lastMessageTime: new Date().toISOString()
-            };
-          }
-          return chat;
-        });
+        return chat;
       });
 
-      // Simular respuesta automática después de 2 segundos
-      setTimeout(() => {
-        const responses = [
-          '¡Claro! Estoy revisando tu mensaje.',
-          'Perfecto, te respondo en un momento.',
-          'Interesante, déjame pensarlo.',
-          '¡Genial! Me alegra saber eso.',
-          'Entendido, gracias por la información.'
-        ];
-        
-        const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-        
-        const autoReply = {
-          id: (Date.now() + 1).toString(),
-          text: randomResponse,
-          timestamp: new Date().toISOString(),
-          isSent: false,
-          isRead: true
-        };
-
-        setChats(prevChats => {
-          if (!prevChats || !Array.isArray(prevChats)) {
-            return initialChats.map(chat => 
-              chat.id === chatId 
-                ? {
-                    ...chat,
-                    messages: [...chat.messages, autoReply],
-                    lastMessage: randomResponse,
-                    lastMessageTime: new Date().toISOString()
-                  }
-                : chat
-            );
-          }
-
-          return prevChats.map(chat => {
-            if (chat.id === chatId) {
-              const updatedMessages = [...(chat.messages || []), autoReply];
-              return {
-                ...chat,
-                messages: updatedMessages,
-                lastMessage: randomResponse,
-                lastMessageTime: new Date().toISOString()
-              };
-            }
-            return chat;
-          });
-        });
-      }, 2000);
-
-    } catch (error) {
-      console.error('❌ Error enviando mensaje:', error);
-    }
+      setChats(finalChats);
+    }, 1500);
   };
 
-  // Función getFilteredChats - CORREGIDA CON VERIFICACIONES
-  const getFilteredChats = () => {
-    if (!searchTerm || !chats || !Array.isArray(chats) || chats.length === 0) {
-      return chats || [];
-    }
-    
-    try {
-      const filtered = chats.filter(chat => {
-        if (!chat || !chat.name) return false;
-        
-        const nameMatch = chat.name.toLowerCase().includes(searchTerm.toLowerCase());
-        const messageMatch = chat.lastMessage?.toLowerCase().includes(searchTerm.toLowerCase());
-        
-        return nameMatch || messageMatch;
-      });
-      
-      return filtered;
-    } catch (error) {
-      console.error('❌ Error filtrando chats:', error);
-      return chats;
-    }
-  };
+  // Filtrar chats
+  const filteredChats = searchTerm 
+    ? chats.filter(chat => 
+        chat.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (chat.lastMessage && chat.lastMessage.toLowerCase().includes(searchTerm.toLowerCase()))
+      )
+    : chats;
 
-  // Valor del contexto - CON FALLBACKS PARA EVITAR ERRORES
-  const value = {
-    chats: getFilteredChats(),
+  // Valor del contexto
+  const contextValue = {
+    chats: filteredChats,
     currentChat,
-    setCurrentChat: setCurrentChat || (() => console.log('setCurrentChat no disponible')),
-    searchTerm: searchTerm || '',
-    setSearchTerm: setSearchTerm || (() => console.log('setSearchTerm no disponible')),
-    sendMessage: sendMessage || (() => console.log('sendMessage no disponible')),
-    isLoaded
+    setCurrentChat,
+    searchTerm, 
+    setSearchTerm,
+    sendMessage
   };
-
-  console.log('🎯 ChatContext proporcionado con:', { 
-    chatsCount: getFilteredChats().length,
-    currentChat: currentChat?.name,
-    searchTerm,
-    isLoaded 
-  });
 
   return (
-    <ChatContext.Provider value={value}>
+    <ChatContext.Provider value={contextValue}>
       {children}
     </ChatContext.Provider>
   );

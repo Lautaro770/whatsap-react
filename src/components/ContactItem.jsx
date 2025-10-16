@@ -1,38 +1,51 @@
 ﻿import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useChat } from '../contexts/ChatContext';
+import { useNavigate } from 'react-router-dom';
 
-const ContactItem = ({ contact }) => {
+const ContactItem = ({ chat, isActive }) => {
+  const { setCurrentChat } = useChat();
   const navigate = useNavigate();
-  const { setCurrentContact } = useChat();
 
   const handleClick = () => {
-    setCurrentContact(contact);
-    console.log('Navigating to chat with:', contact.id, contact.name);
-    navigate(`/chat/${contact.id}`);
+    setCurrentChat(chat);
+    navigate(`/chat/${chat.id}`);
+  };
+
+  const formatTime = (timestamp) => {
+    const date = new Date(timestamp);
+    return date.toLocaleTimeString('es-ES', { 
+      hour: '2-digit', 
+      minute: '2-digit' 
+    });
+  };
+
+  const getLastMessage = () => {
+    const messages = chat.messages;
+    return messages.length > 0 ? messages[messages.length - 1].text : 'No hay mensajes';
+  };
+
+  const getLastMessageTime = () => {
+    const messages = chat.messages;
+    return messages.length > 0 ? formatTime(messages[messages.length - 1].timestamp) : '';
   };
 
   return (
-    <div className="contact-item" onClick={handleClick}>
-      <div className="contact-item__avatar">
-        <div className="avatar">
-          {contact.name.charAt(0)}
-        </div>
-        {contact.online && <div className="online-indicator"></div>}
+    <div 
+      className={`contact-item ${isActive ? 'active' : ''}`}
+      onClick={handleClick}
+      tabIndex={0}
+      role="button"
+      onKeyPress={(e) => e.key === 'Enter' && handleClick()}
+    >
+      <div className="contact-avatar">
+        {chat.avatar}
       </div>
-      
-      <div className="contact-item__info">
-        <div className="contact-item__header">
-          <h3 className="contact-item__name">{contact.name}</h3>
-          <span className="contact-item__time">{contact.timestamp}</span>
+      <div className="contact-info">
+        <div className="contact-header">
+          <div className="contact-name">{chat.name}</div>
+          <div className="contact-time">{getLastMessageTime()}</div>
         </div>
-        
-        <div className="contact-item__preview">
-          <p className="contact-item__message">{contact.lastMessage}</p>
-          {contact.unread > 0 && (
-            <span className="unread-badge">{contact.unread}</span>
-          )}
-        </div>
+        <div className="last-message">{getLastMessage()}</div>
       </div>
     </div>
   );

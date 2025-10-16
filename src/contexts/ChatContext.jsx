@@ -1,33 +1,173 @@
-﻿import { createContext, useState } from "react";
+﻿import React, { createContext, useContext, useState, useEffect } from 'react';
 
-export const ChatContext = createContext();
+const ChatContext = createContext();
+
+export const useChat = () => {
+  const context = useContext(ChatContext);
+  if (!context) {
+    throw new Error('useChat debe usarse dentro de ChatProvider');
+  }
+  return context;
+};
 
 export const ChatProvider = ({ children }) => {
-  const [contacts, setContacts] = useState([
-    { id: 1, name: "Ana", lastMessage: "Hola!", online: true },
-    { id: 2, name: "Luis", lastMessage: "¿Cómo estás?", online: false },
-  ]);
+  const [chats, setChats] = useState([]);
+  const [currentChat, setCurrentChat] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const [messages, setMessages] = useState({
-    1: [{ fromMe: false, text: "Hola!", time: "12:00" }],
-    2: [{ fromMe: false, text: "¿Cómo estás?", time: "11:45" }],
-  });
+  // Datos iniciales mock
+  const initialChats = [
+    {
+      id: '1',
+      name: 'Juan Pérez',
+      avatar: 'JP',
+      lastSeen: '2024-01-15T10:30:00',
+      isOnline: true,
+      messages: [
+        {
+          id: '1',
+          text: 'Hola, ¿cómo estás?',
+          timestamp: '2024-01-15T10:30:00',
+          isSent: false,
+          isRead: true
+        },
+        {
+          id: '2',
+          text: '¡Hola Juan! Estoy bien, ¿y tú?',
+          timestamp: '2024-01-15T10:32:00',
+          isSent: true,
+          isRead: true
+        }
+      ]
+    },
+    {
+      id: '2',
+      name: 'María García',
+      avatar: 'MG',
+      lastSeen: '2024-01-15T09:15:00',
+      isOnline: false,
+      messages: [
+        {
+          id: '1',
+          text: '¿Quedamos esta tarde?',
+          timestamp: '2024-01-15T09:15:00',
+          isSent: false,
+          isRead: true
+        }
+      ]
+    },
+    {
+      id: '3',
+      name: 'Carlos López',
+      avatar: 'CL',
+      lastSeen: '2024-01-14T22:45:00',
+      isOnline: true,
+      messages: [
+        {
+          id: '1',
+          text: 'Te envío el documento',
+          timestamp: '2024-01-14T22:45:00',
+          isSent: false,
+          isRead: true
+        },
+        {
+          id: '2',
+          text: 'Perfecto, lo reviso ahora',
+          timestamp: '2024-01-14T22:46:00',
+          isSent: true,
+          isRead: true
+        }
+      ]
+    }
+  ];
 
-  const sendMessage = (contactId, text) => {
-    if (!text.trim()) return;
+  // Cargar chats del localStorage o usar datos iniciales
+  useEffect(() => {
+    const savedChats = localStorage.getItem('whatsapp-chats');
+    if (savedChats) {
+      setChats(JSON.parse(savedChats));
+    } else {
+      setChats(initialChats);
+      localStorage.setItem('whatsapp-chats', JSON.stringify(initialChats));
+    }
+  }, []);
+
+  // Guardar chats en localStorage cuando cambien
+  useEffect(() => {
+    if (chats.length > 0) {
+      localStorage.setItem('whatsapp-chats', JSON.stringify(chats));
+    }
+  }, [chats]);
+
+  const sendMessage = (chatId, messageText) => {
+    if (!messageText.trim()) return;
+
     const newMessage = {
-      fromMe: true,
-      text,
-      time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      id: Date.now().toString(),
+      text: messageText,
+      timestamp: new Date().toISOString(),
+      isSent: true,
+      isRead: false
     };
-    setMessages(prev => ({
-      ...prev,
-      [contactId]: [...(prev[contactId] || []), newMessage],
-    }));
+
+    setChats(prevChats => 
+      prevChats.map(chat => 
+        chat.id === chatId 
+          ? {
+              ...chat,
+              messages: [...chat.messages, newMessage],
+              lastMessage: messageText,
+              lastMessageTime: new Date().toISOString()
+            }
+          : chat
+      )
+    );
+
+    // Simular respuesta automática después de 2 segundos
+    setTimeout(() => {
+      const autoReply = {
+        id: (Date.now() + 1).toString(),
+        text: '¡Claro! Estoy revisando tu mensaje.',
+        timestamp: new Date(Date.now() + 2000).toISOString(),
+        isSent: false,
+        isRead: true
+      };
+
+      setChats(prevChats => 
+        prevChats.map(chat => 
+          chat.id === chatId 
+            ? {
+                ...chat,
+                messages: [...chat.messages, autoReply],
+                lastMessage: '¡Claro! Estoy revisando tu mensaje.',
+                lastMessageTime: new Date(Date.now() + 2000).toISOString()
+              }
+            : chat
+        )
+      );
+    }, 2000);
+  };
+
+  const getFilteredChats = () => {
+    if (!searchTerm) return chats;
+    
+    return chats.filter(chat =>
+      chat.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  };
+
+  const value = {
+    chats,
+    currentChat,
+    setCurrentChat,
+    searchTerm,
+    setSearchTerm,
+    sendMessage,
+    getFilteredChats
   };
 
   return (
-    <ChatContext.Provider value={{ contacts, messages, sendMessage }}>
+    <ChatContext.Provider value={value}>
       {children}
     </ChatContext.Provider>
   );

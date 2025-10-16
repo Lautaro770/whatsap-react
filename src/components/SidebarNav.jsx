@@ -21,30 +21,5 @@ const SidebarNav = () => {
     </div>
   );
 };
-const [activeTab, setActiveTab] = useState('chats');
-
-const navItems = [
-  { id: 'chats', icon: <FaComments />, title: 'Chats' },
-  { id: 'status', icon: <FaStatusPage />, title: 'Estados' },
-  { id: 'contacts', icon: <FaUserFriends />, title: 'Contactos' },
-  { id: 'settings', icon: <FaCog />, title: 'Ajustes' }
-];
-
-return (
-  <div className="sidebar-nav">
-    <div className="nav-items">
-      {navItems.map(item => (
-        <button
-          key={item.id}
-          className={`nav-item ${activeTab === item.id ? 'active' : ''}`}
-          onClick={() => setActiveTab(item.id)}
-          title={item.title}
-        >
-          {item.icon}
-        </button>
-      ))}
-    </div>
-  </div>
-);
 
 export default SidebarNav;

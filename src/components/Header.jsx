@@ -37,9 +37,6 @@ const Header = ({ showBackButton = false, title = "WhatsApp" }) => {
             <FaArrowLeft />
           </button>
         )}
-        <div className="user-avatar">
-          TU
-        </div>
         <div className="header-title">
           {title}
         </div>

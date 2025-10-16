@@ -14,8 +14,9 @@ export const ChatProvider = ({ children }) => {
   const [chats, setChats] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  // Datos iniciales mock
+  // Datos iniciales mock - MEJORADO
   const initialChats = [
     {
       id: '1',
@@ -23,6 +24,8 @@ export const ChatProvider = ({ children }) => {
       avatar: 'JP',
       lastSeen: '2024-01-15T10:30:00',
       isOnline: true,
+      lastMessage: 'Hola, ¿cómo estás?',
+      lastMessageTime: '2024-01-15T10:30:00',
       messages: [
         {
           id: '1',
@@ -46,6 +49,8 @@ export const ChatProvider = ({ children }) => {
       avatar: 'MG',
       lastSeen: '2024-01-15T09:15:00',
       isOnline: false,
+      lastMessage: '¿Quedamos esta tarde?',
+      lastMessageTime: '2024-01-15T09:15:00',
       messages: [
         {
           id: '1',
@@ -62,6 +67,8 @@ export const ChatProvider = ({ children }) => {
       avatar: 'CL',
       lastSeen: '2024-01-14T22:45:00',
       isOnline: true,
+      lastMessage: 'Te envío el documento',
+      lastMessageTime: '2024-01-14T22:45:00',
       messages: [
         {
           id: '1',
@@ -80,135 +87,100 @@ export const ChatProvider = ({ children }) => {
       ]
     },
     {
-    id: '4',
-    name: 'Ana Martínez',
-    avatar: 'AM',
-    lastSeen: '2024-01-16T14:20:00',
-    isOnline: true,
-    messages: [
-      {
-        id: '1',
-        text: '¿Viste la nueva película?',
-        timestamp: '2024-01-16T14:20:00',
-        isSent: false,
-        isRead: true
-      },
-      {
-        id: '2', 
-        text: 'Sí, ¡estuvo increíble!',
-        timestamp: '2024-01-16T14:25:00',
-        isSent: true,
-        isRead: true
-      },
-      {
-        id: '3',
-        text: 'Tenemos que ir juntos la próxima',
-        timestamp: '2024-01-16T14:26:00',
-        isSent: false,
-        isRead: true
-      }
-    ]
-  },
-  {
-    id: '5',
-    name: 'Pedro Rodríguez',
-    avatar: 'PR',
-    lastSeen: '2024-01-16T11:30:00',
-    isOnline: false,
-    messages: [
-      {
-        id: '1',
-        text: '¿Pasaste por el material de estudio?',
-        timestamp: '2024-01-16T11:30:00',
-        isSent: false,
-        isRead: true
-      },
-      {
-        id: '2',
-        text: 'Sí, lo tengo todo listo para el examen',
-        timestamp: '2024-01-16T11:35:00',
-        isSent: true,
-        isRead: true
-      }
-    ]
-  },
-  {
-    id: '6',
-    name: 'Laura Fernández',
-    avatar: 'LF',
-    lastSeen: '2024-01-15T16:45:00',
-    isOnline: true,
-    messages: [
-      {
-        id: '1',
-        text: '¡Feliz cumpleaños! 🎉',
-        timestamp: '2024-01-15T16:45:00',
-        isSent: false,
-        isRead: true
-      },
-      {
-        id: '2',
-        text: '¡Muchas gracias! ¿Vienes a la fiesta?',
-        timestamp: '2024-01-15T16:50:00',
-        isSent: true,
-        isRead: false
-      },
-      {
-        id: '3',
-        text: '¡Claro que sí! Llego a las 20:00',
-        timestamp: '2024-01-15T17:00:00',
-        isSent: false,
-        isRead: true
-      }
-    ]
-  },
-  {
-    id: '7',
-    name: 'Diego Silva',
-    avatar: 'DS',
-    lastSeen: '2024-01-16T09:15:00',
-    isOnline: true,
-    messages: [
-      {
-        id: '1',
-        text: '¿Terminaste el proyecto?',
-        timestamp: '2024-01-16T09:15:00',
-        isSent: false,
-        isRead: true
-      },
-      {
-        id: '2',
-        text: 'Casi, me falta solo la documentación',
-        timestamp: '2024-01-16T09:20:00',
-        isSent: true,
-        isRead: true
-      },
-      {
-        id: '3',
-        text: 'Perfecto, envíamelo cuando esté listo',
-        timestamp: '2024-01-16T09:22:00',
-        isSent: false,
-        isRead: true
-      }
-    ]
-  }
+      id: '4',
+      name: 'Ana Martínez',
+      avatar: 'AM',
+      lastSeen: '2024-01-16T14:20:00',
+      isOnline: true,
+      lastMessage: '¿Viste la nueva película?',
+      lastMessageTime: '2024-01-16T14:20:00',
+      messages: [
+        {
+          id: '1',
+          text: '¿Viste la nueva película?',
+          timestamp: '2024-01-16T14:20:00',
+          isSent: false,
+          isRead: true
+        },
+        {
+          id: '2', 
+          text: 'Sí, ¡estuvo increíble!',
+          timestamp: '2024-01-16T14:25:00',
+          isSent: true,
+          isRead: true
+        },
+        {
+          id: '3',
+          text: 'Tenemos que ir juntos la próxima',
+          timestamp: '2024-01-16T14:26:00',
+          isSent: false,
+          isRead: true
+        }
+      ]
+    },
+    {
+      id: '5',
+      name: 'Pedro Rodríguez',
+      avatar: 'PR',
+      lastSeen: '2024-01-16T11:30:00',
+      isOnline: false,
+      lastMessage: '¿Pasaste por el material de estudio?',
+      lastMessageTime: '2024-01-16T11:30:00',
+      messages: [
+        {
+          id: '1',
+          text: '¿Pasaste por el material de estudio?',
+          timestamp: '2024-01-16T11:30:00',
+          isSent: false,
+          isRead: true
+        },
+        {
+          id: '2',
+          text: 'Sí, lo tengo todo listo para el examen',
+          timestamp: '2024-01-16T11:35:00',
+          isSent: true,
+          isRead: true
+        }
+      ]
+    }
   ];
 
-  // Cargar chats del localStorage o usar datos iniciales
+  // Cargar chats - CORREGIDO para producción
   useEffect(() => {
-    const savedChats = localStorage.getItem('whatsapp-chats');
-    if (savedChats) {
-      setChats(JSON.parse(savedChats));
-    } else {
+    try {
+      // En producción, siempre usar datos iniciales
+      const isProduction = process.env.NODE_ENV === 'production';
+      
+      if (isProduction) {
+        console.log('Cargando datos mock para producción');
+        setChats(initialChats);
+        setIsLoaded(true);
+      } else {
+        // En desarrollo, usar localStorage
+        const savedChats = localStorage.getItem('whatsapp-chats');
+        if (savedChats) {
+          setChats(JSON.parse(savedChats));
+        } else {
+          setChats(initialChats);
+          localStorage.setItem('whatsapp-chats', JSON.stringify(initialChats));
+        }
+        setIsLoaded(true);
+      }
+    } catch (error) {
+      console.error('Error cargando chats:', error);
       setChats(initialChats);
-      localStorage.setItem('whatsapp-chats', JSON.stringify(initialChats));
+      setIsLoaded(true);
     }
   }, []);
 
-  // Guardar chats en localStorage cuando cambien
+  // Guardar chats en localStorage solo en desarrollo
   useEffect(() => {
-    if (chats.length > 0) {
-      localStorage.setItem('whatsapp-chats', JSON.stringify(chats));
+    if (chats.length > 0 && process.env.NODE_ENV !== 'production') {
+      try {
+        localStorage.setItem('whatsapp-chats', JSON.stringify(chats));
+      } catch (error) {
+        console.error('Error guardando chats:', error);
+      }
     }
   }, [chats]);
 
@@ -238,9 +210,19 @@ export const ChatProvider = ({ children }) => {
 
     // Simular respuesta automática después de 2 segundos
     setTimeout(() => {
+      const responses = [
+        '¡Claro! Estoy revisando tu mensaje.',
+        'Perfecto, te respondo en un momento.',
+        'Interesante, déjame pensarlo.',
+        '¡Genial! Me alegra saber eso.',
+        'Entendido, gracias por la información.'
+      ];
+      
+      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+      
       const autoReply = {
         id: (Date.now() + 1).toString(),
-        text: '¡Claro! Estoy revisando tu mensaje.',
+        text: randomResponse,
         timestamp: new Date(Date.now() + 2000).toISOString(),
         isSent: false,
         isRead: true
@@ -252,7 +234,7 @@ export const ChatProvider = ({ children }) => {
             ? {
                 ...chat,
                 messages: [...chat.messages, autoReply],
-                lastMessage: '¡Claro! Estoy revisando tu mensaje.',
+                lastMessage: randomResponse,
                 lastMessageTime: new Date(Date.now() + 2000).toISOString()
               }
             : chat
@@ -265,18 +247,19 @@ export const ChatProvider = ({ children }) => {
     if (!searchTerm) return chats;
     
     return chats.filter(chat =>
-      chat.name.toLowerCase().includes(searchTerm.toLowerCase())
+      chat.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      chat.lastMessage?.toLowerCase().includes(searchTerm.toLowerCase())
     );
   };
 
   const value = {
-    chats,
+    chats: getFilteredChats(),
     currentChat,
     setCurrentChat,
     searchTerm,
     setSearchTerm,
     sendMessage,
-    getFilteredChats
+    isLoaded
   };
 
   return (

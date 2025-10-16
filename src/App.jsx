@@ -15,11 +15,26 @@ function AppContent() {
     const handleResize = () => {
       const mobile = window.innerWidth <= 768;
       setIsMobile(mobile);
+      
+      // Reset mobileView cuando cambia de móvil a desktop
+      if (!mobile) {
+        setMobileView('list');
+      } else {
+        // En móvil, determinar la vista basada en la ruta actual
+        if (location.pathname === '/') {
+          setMobileView('list');
+        } else if (location.pathname.startsWith('/chat/')) {
+          setMobileView('chat');
+        }
+      }
     };
 
     window.addEventListener('resize', handleResize);
+    // Ejecutar una vez al montar
+    handleResize();
+    
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [location.pathname]);
 
   useEffect(() => {
     if (isMobile) {
@@ -28,11 +43,14 @@ function AppContent() {
       } else if (location.pathname.startsWith('/chat/')) {
         setMobileView('chat');
       }
+    } else {
+      // En desktop, siempre mostrar ambas vistas
+      setMobileView('desktop');
     }
   }, [location.pathname, isMobile]);
 
   const getAppClassName = () => {
-    if (!isMobile) return 'app';
+    if (!isMobile) return 'app desktop-view';
     return 'app mobile-' + mobileView + '-view';
   };
 

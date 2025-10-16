@@ -39,8 +39,16 @@ const ChatWindow = () => {
   }
 
   return (
-    <div className="chat-window">
+      <div className="chat-window">
       <div className="chat-header">
+      <div className="chat-header-back">
+        <button 
+          className="back-button"
+          onClick={() => navigate('/')}
+        >
+      <FaArrowLeft />
+    </button>
+  </div>
         <div className="contact-avatar">
           {currentChat.avatar}
         </div>

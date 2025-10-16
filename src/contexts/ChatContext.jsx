@@ -78,7 +78,120 @@ export const ChatProvider = ({ children }) => {
           isRead: true
         }
       ]
-    }
+    },
+    {
+    id: '4',
+    name: 'Ana Martínez',
+    avatar: 'AM',
+    lastSeen: '2024-01-16T14:20:00',
+    isOnline: true,
+    messages: [
+      {
+        id: '1',
+        text: '¿Viste la nueva película?',
+        timestamp: '2024-01-16T14:20:00',
+        isSent: false,
+        isRead: true
+      },
+      {
+        id: '2', 
+        text: 'Sí, ¡estuvo increíble!',
+        timestamp: '2024-01-16T14:25:00',
+        isSent: true,
+        isRead: true
+      },
+      {
+        id: '3',
+        text: 'Tenemos que ir juntos la próxima',
+        timestamp: '2024-01-16T14:26:00',
+        isSent: false,
+        isRead: true
+      }
+    ]
+  },
+  {
+    id: '5',
+    name: 'Pedro Rodríguez',
+    avatar: 'PR',
+    lastSeen: '2024-01-16T11:30:00',
+    isOnline: false,
+    messages: [
+      {
+        id: '1',
+        text: '¿Pasaste por el material de estudio?',
+        timestamp: '2024-01-16T11:30:00',
+        isSent: false,
+        isRead: true
+      },
+      {
+        id: '2',
+        text: 'Sí, lo tengo todo listo para el examen',
+        timestamp: '2024-01-16T11:35:00',
+        isSent: true,
+        isRead: true
+      }
+    ]
+  },
+  {
+    id: '6',
+    name: 'Laura Fernández',
+    avatar: 'LF',
+    lastSeen: '2024-01-15T16:45:00',
+    isOnline: true,
+    messages: [
+      {
+        id: '1',
+        text: '¡Feliz cumpleaños! 🎉',
+        timestamp: '2024-01-15T16:45:00',
+        isSent: false,
+        isRead: true
+      },
+      {
+        id: '2',
+        text: '¡Muchas gracias! ¿Vienes a la fiesta?',
+        timestamp: '2024-01-15T16:50:00',
+        isSent: true,
+        isRead: false
+      },
+      {
+        id: '3',
+        text: '¡Claro que sí! Llego a las 20:00',
+        timestamp: '2024-01-15T17:00:00',
+        isSent: false,
+        isRead: true
+      }
+    ]
+  },
+  {
+    id: '7',
+    name: 'Diego Silva',
+    avatar: 'DS',
+    lastSeen: '2024-01-16T09:15:00',
+    isOnline: true,
+    messages: [
+      {
+        id: '1',
+        text: '¿Terminaste el proyecto?',
+        timestamp: '2024-01-16T09:15:00',
+        isSent: false,
+        isRead: true
+      },
+      {
+        id: '2',
+        text: 'Casi, me falta solo la documentación',
+        timestamp: '2024-01-16T09:20:00',
+        isSent: true,
+        isRead: true
+      },
+      {
+        id: '3',
+        text: 'Perfecto, envíamelo cuando esté listo',
+        timestamp: '2024-01-16T09:22:00',
+        isSent: false,
+        isRead: true
+      }
+    ]
+  }
   ];
 
   // Cargar chats del localStorage o usar datos iniciales

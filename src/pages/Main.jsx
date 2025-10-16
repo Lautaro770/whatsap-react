@@ -6,7 +6,7 @@ import ChatList from '../components/ChatList';
 const Main = () => {
   return (
     <div className="sidebar">
-      <Header title="WhatsApp" />
+      <Header />
       <SearchBar />
       <ChatList />
     </div>

@@ -1,25 +1,25 @@
-import React from 'react';
-import { FaComments, FaStatusPage, FaCog, FaUserFriends } from 'react-icons/fa';
+﻿import React from 'react';
+import { FaComments, FaCog, FaUserFriends, FaCircle } from 'react-icons/fa';
 
 const SidebarNav = () => {
-return (
+  return (
     <div className="sidebar-nav">
-    <div className="nav-items">
+      <div className="nav-items">
         <button className="nav-item active" title="Chats">
-        <FaComments />
+          <FaComments />
         </button>
         <button className="nav-item" title="Estados">
-        <FaStatusPage />
+          <FaCircle />
         </button>
         <button className="nav-item" title="Contactos">
-        <FaUserFriends />
+          <FaUserFriends />
         </button>
         <button className="nav-item" title="Ajustes">
-        <FaCog />
+          <FaCog />
         </button>
+      </div>
     </div>
-    </div>
-);
+  );
 };
 
 export default SidebarNav;

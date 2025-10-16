@@ -515,7 +515,7 @@ body {
   .sidebar {
     transform: translateX(0) !important;
     position: relative !important;
-    width: 30% !important;
+    width: 10% !important;
     min-width: 300px !important;
     max-width: 400px !important;
     display: flex !important;

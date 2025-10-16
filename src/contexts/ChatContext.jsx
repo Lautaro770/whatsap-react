@@ -145,122 +145,162 @@ export const ChatProvider = ({ children }) => {
     }
   ];
 
-  // Cargar chats - CORREGIDO para producción
+  // Cargar chats - SIMPLIFICADO para evitar errores
   useEffect(() => {
+    console.log('🔄 Cargando chats...');
     try {
-      // En producción, siempre usar datos iniciales
-      const isProduction = process.env.NODE_ENV === 'production';
-      
-      if (isProduction) {
-        console.log('Cargando datos mock para producción');
-        setChats(initialChats);
-        setIsLoaded(true);
-      } else {
-        // En desarrollo, usar localStorage
-        const savedChats = localStorage.getItem('whatsapp-chats');
-        if (savedChats) {
-          setChats(JSON.parse(savedChats));
-        } else {
-          setChats(initialChats);
-          localStorage.setItem('whatsapp-chats', JSON.stringify(initialChats));
-        }
-        setIsLoaded(true);
-      }
-    } catch (error) {
-      console.error('Error cargando chats:', error);
+      // Usar datos iniciales directamente, sin localStorage en producción
       setChats(initialChats);
+      setIsLoaded(true);
+      console.log('✅ Chats cargados correctamente');
+    } catch (error) {
+      console.error('❌ Error cargando chats:', error);
+      setChats([]);
       setIsLoaded(true);
     }
   }, []);
 
-  // Guardar chats en localStorage solo en desarrollo
-  useEffect(() => {
-    if (chats.length > 0 && process.env.NODE_ENV !== 'production') {
-      try {
-        localStorage.setItem('whatsapp-chats', JSON.stringify(chats));
-      } catch (error) {
-        console.error('Error guardando chats:', error);
-      }
-    }
-  }, [chats]);
-
+  // Función sendMessage - CON MÁS VERIFICACIONES
   const sendMessage = (chatId, messageText) => {
-    if (!messageText.trim()) return;
+    console.log('📤 Enviando mensaje a chat:', chatId, messageText);
+    
+    if (!messageText || !messageText.trim()) {
+      console.log('⚠️ Mensaje vacío, no se envía');
+      return;
+    }
 
-    const newMessage = {
-      id: Date.now().toString(),
-      text: messageText,
-      timestamp: new Date().toISOString(),
-      isSent: true,
-      isRead: false
-    };
-
-    setChats(prevChats => 
-      prevChats.map(chat => 
-        chat.id === chatId 
-          ? {
-              ...chat,
-              messages: [...chat.messages, newMessage],
-              lastMessage: messageText,
-              lastMessageTime: new Date().toISOString()
-            }
-          : chat
-      )
-    );
-
-    // Simular respuesta automática después de 2 segundos
-    setTimeout(() => {
-      const responses = [
-        '¡Claro! Estoy revisando tu mensaje.',
-        'Perfecto, te respondo en un momento.',
-        'Interesante, déjame pensarlo.',
-        '¡Genial! Me alegra saber eso.',
-        'Entendido, gracias por la información.'
-      ];
-      
-      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-      
-      const autoReply = {
-        id: (Date.now() + 1).toString(),
-        text: randomResponse,
-        timestamp: new Date(Date.now() + 2000).toISOString(),
-        isSent: false,
-        isRead: true
+    try {
+      const newMessage = {
+        id: Date.now().toString(),
+        text: messageText.trim(),
+        timestamp: new Date().toISOString(),
+        isSent: true,
+        isRead: false
       };
 
-      setChats(prevChats => 
-        prevChats.map(chat => 
-          chat.id === chatId 
-            ? {
+      setChats(prevChats => {
+        if (!prevChats || !Array.isArray(prevChats)) {
+          console.log('📝 No hay chats previos, usando iniciales');
+          return initialChats.map(chat => 
+            chat.id === chatId 
+              ? {
+                  ...chat,
+                  messages: [...chat.messages, newMessage],
+                  lastMessage: messageText,
+                  lastMessageTime: new Date().toISOString()
+                }
+              : chat
+          );
+        }
+
+        return prevChats.map(chat => {
+          if (chat.id === chatId) {
+            const updatedMessages = [...(chat.messages || []), newMessage];
+            return {
+              ...chat,
+              messages: updatedMessages,
+              lastMessage: messageText,
+              lastMessageTime: new Date().toISOString()
+            };
+          }
+          return chat;
+        });
+      });
+
+      // Simular respuesta automática después de 2 segundos
+      setTimeout(() => {
+        const responses = [
+          '¡Claro! Estoy revisando tu mensaje.',
+          'Perfecto, te respondo en un momento.',
+          'Interesante, déjame pensarlo.',
+          '¡Genial! Me alegra saber eso.',
+          'Entendido, gracias por la información.'
+        ];
+        
+        const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+        
+        const autoReply = {
+          id: (Date.now() + 1).toString(),
+          text: randomResponse,
+          timestamp: new Date().toISOString(),
+          isSent: false,
+          isRead: true
+        };
+
+        setChats(prevChats => {
+          if (!prevChats || !Array.isArray(prevChats)) {
+            return initialChats.map(chat => 
+              chat.id === chatId 
+                ? {
+                    ...chat,
+                    messages: [...chat.messages, autoReply],
+                    lastMessage: randomResponse,
+                    lastMessageTime: new Date().toISOString()
+                  }
+                : chat
+            );
+          }
+
+          return prevChats.map(chat => {
+            if (chat.id === chatId) {
+              const updatedMessages = [...(chat.messages || []), autoReply];
+              return {
                 ...chat,
-                messages: [...chat.messages, autoReply],
+                messages: updatedMessages,
                 lastMessage: randomResponse,
-                lastMessageTime: new Date(Date.now() + 2000).toISOString()
-              }
-            : chat
-        )
-      );
-    }, 2000);
+                lastMessageTime: new Date().toISOString()
+              };
+            }
+            return chat;
+          });
+        });
+      }, 2000);
+
+    } catch (error) {
+      console.error('❌ Error enviando mensaje:', error);
+    }
   };
 
+  // Función getFilteredChats - CORREGIDA CON VERIFICACIONES
   const getFilteredChats = () => {
-    if (!searchTerm) return chats;
+    if (!searchTerm || !chats || !Array.isArray(chats) || chats.length === 0) {
+      return chats || [];
+    }
     
-    return chats.filter(chat =>
-      chat.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      chat.lastMessage?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    try {
+      const filtered = chats.filter(chat => {
+        if (!chat || !chat.name) return false;
+        
+        const nameMatch = chat.name.toLowerCase().includes(searchTerm.toLowerCase());
+        const messageMatch = chat.lastMessage?.toLowerCase().includes(searchTerm.toLowerCase());
+        
+        return nameMatch || messageMatch;
+      });
+      
+      return filtered;
+    } catch (error) {
+      console.error('❌ Error filtrando chats:', error);
+      return chats;
+    }
   };
 
+  // Valor del contexto - CON FALLBACKS PARA EVITAR ERRORES
   const value = {
     chats: getFilteredChats(),
     currentChat,
-    setCurrentChat,
-    searchTerm,
-    setSearchTerm,
-    sendMessage,
+    setCurrentChat: setCurrentChat || (() => console.log('setCurrentChat no disponible')),
+    searchTerm: searchTerm || '',
+    setSearchTerm: setSearchTerm || (() => console.log('setSearchTerm no disponible')),
+    sendMessage: sendMessage || (() => console.log('sendMessage no disponible')),
     isLoaded
   };
+
+  console.log('🎯 ChatContext proporcionado con:', { 
+    chatsCount: getFilteredChats().length,
+    currentChat: currentChat?.name,
+    searchTerm,
+    isLoaded 
+  });
 
   return (
     <ChatContext.Provider value={value}>

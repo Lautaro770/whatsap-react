@@ -1,11 +1,13 @@
-﻿import React, { useState, useRef, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+﻿
+import React, { useState, useRef, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useChat } from '../contexts/ChatContext';
 import Message from './Message';
-import { FaPaperPlane, FaSmile, FaPaperclip, FaMicrophone } from 'react-icons/fa';
+import { FaPaperPlane, FaSmile, FaPaperclip, FaMicrophone, FaArrowLeft } from 'react-icons/fa';
 
 const ChatWindow = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { chats, sendMessage } = useChat();
   const [messageText, setMessageText] = useState('');
   const messagesEndRef = useRef(null);
@@ -39,16 +41,17 @@ const ChatWindow = () => {
   }
 
   return (
-      <div className="chat-window">
+    <div className="chat-window">
+      {/* Header del chat con botón de volver */}
       <div className="chat-header">
-      <div className="chat-header-back">
-        <button 
-          className="back-button"
-          onClick={() => navigate('/')}
-        >
-      <FaArrowLeft />
-    </button>
-  </div>
+        <div className="chat-header-back">
+          <button 
+            className="back-button"
+            onClick={() => navigate('/')}
+          >
+            <FaArrowLeft />
+          </button>
+        </div>
         <div className="contact-avatar">
           {currentChat.avatar}
         </div>

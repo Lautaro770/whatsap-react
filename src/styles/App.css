@@ -1,5 +1,4 @@
 ﻿/* Reset y estilos base */
-/* Reset y estilos base */
 * {
   margin: 0;
   padding: 0;
@@ -26,9 +25,13 @@ body {
   border: none;
   outline: none;
 }
-
+.main-container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
 /* ===== VISTA ESCRITORIO (768px+) ===== */
-.sidebar {
+/* .sidebar {
   width: 30%;
   min-width: 300px;
   max-width: 400px;
@@ -37,7 +40,18 @@ body {
   flex-direction: column;
   background-color: #FFFFFF;
   transition: all 0.3s ease;
+} */
+.sidebar {
+  width: 30%;
+  min-width: 300px;
+  max-width: 400px;
+  border-right: 1px solid #E0E0E0;
+  display: flex;
+  flex-direction: column;
+  background-color: #FFFFFF;
+  flex-shrink: 0;
 }
+
 
 .chat-window {
   flex: 1;
@@ -732,6 +746,7 @@ body {
     font-size: 22px;
   }
 }
+
 /* ===== PANEL "SELECCIONA UN CHAT" ===== */
 .no-chat-selected-panel {
   flex: 1;
@@ -804,23 +819,18 @@ body {
   color: #8696a0;
 }
 
-/* Asegurar que el sidebar ocupe solo el ancho necesario */
-.sidebar {
-  width: 30%;
-  min-width: 300px;
-  max-width: 400px;
-  flex-shrink: 0;
-}
-
 /* Responsive */
 @media (max-width: 767px) {
+  .main-container {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    max-width: none;
+  }
+  
   .no-chat-selected-panel {
     display: none;
-  }
-}
-
-@media (min-width: 1440px) {
-  .no-chat-content {
-    max-width: 600px;
   }
 }

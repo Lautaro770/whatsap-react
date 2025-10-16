@@ -42,10 +42,10 @@ function AppContent() {
       {!isMobile && <SidebarNav />}
       
       {/* Contenido principal */}
-      <div className=\"app-content\">
+      <div className="app-content">
         <Routes>
-          <Route path=\"/\" element={<Main />} />
-          <Route path=\"/chat/:id\" element={<Chat />} />
+          <Route path="/" element={<Main />} />
+          <Route path="/chat/:id" element={<Chat />} />
         </Routes>
       </div>
     </div>

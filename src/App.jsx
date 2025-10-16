@@ -33,8 +33,11 @@ function AppContent() {
 
   const getAppClassName = () => {
     if (!isMobile) return 'app';
-    return 'app mobile-' + mobileView + '-view';
+    return \pp mobile-\-view\;
   };
+
+  // Verificar si hay chat seleccionado
+  const isChatSelected = location.pathname.startsWith('/chat/');
 
   return (
     <div className={getAppClassName()}>
@@ -42,11 +45,44 @@ function AppContent() {
       {!isMobile && <SidebarNav />}
       
       {/* Contenido principal */}
-      <div className="app-content">
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/chat/:id" element={<Chat />} />
-        </Routes>
+      <div className=\"app-content\">
+        {/* Sidebar con lista de chats - siempre visible en desktop, condicional en mobile */}
+        {(!isMobile || mobileView === 'list') && (
+          <div className=\"sidebar\">
+            <Main />
+          </div>
+        )}
+        
+        {/* Chat window - visible cuando hay chat seleccionado */}
+        {isChatSelected && (
+          <div className=\"chat-container\">
+            <Chat />
+          </div>
+        )}
+        
+        {/* Panel "selecciona un chat" - solo en desktop cuando no hay chat */}
+        {!isMobile && !isChatSelected && (
+          <div className=\"no-chat-selected-panel\">
+            <div className=\"no-chat-content\">
+              <div className=\"no-chat-icon\">💬</div>
+              <h2>WhatsApp Web</h2>
+              <p>Envía y recibe mensajes sin necesidad de tener tu teléfono conectado.</p>
+              <div className=\"no-chat-features\">
+                <div className=\"feature\">
+                  <span>🔒</span>
+                  <span>Usa WhatsApp en hasta 4 dispositivos vinculados y 1 teléfono a la vez.</span>
+                </div>
+                <div className=\"feature\">
+                  <span>🖥️</span>
+                  <span>Experimenta una app de escritorio rápida y sincronizada.</span>
+                </div>
+              </div>
+              <div className=\"no-chat-footer\">
+                <span>Tu información personal está protegida con cifrado de extremo a extremo.</span>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+﻿import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { ChatProvider } from './contexts/ChatContext';
 import SidebarNav from './components/SidebarNav';
 import Main from './pages/Main';
 import Chat from './pages/Chat';
 import './styles/App.css';
 
-function App() {
+function AppContent() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [mobileView, setMobileView] = useState('list');
+  const location = useLocation();
 
   useEffect(() => {
     const handleResize = () => {
@@ -28,26 +29,37 @@ function App() {
         setMobileView('chat');
       }
     }
-  }, 
-  [location.pathname, isMobile]);
+  }, [location.pathname, isMobile]);
+
   const getAppClassName = () => {
     if (!isMobile) return 'app';
     return 'app mobile-' + mobileView + '-view';
   };
 
   return (
+    <div className={getAppClassName()}>
+      {/* Barra de navegación lateral - solo en desktop */}
+      {!isMobile && <SidebarNav />}
+      
+      {/* Contenido principal */}
+      <div className=\"app-content\">
+        <Routes>
+          <Route path=\"/\" element={<Main />} />
+          <Route path=\"/chat/:id\" element={<Chat />} />
+        </Routes>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  return (
     <ChatProvider>
       <Router>
-        <div className={getAppClassName()}>
-            {!isMobile && <SidebarNav />}
-                <div className="app-content"></div>
-          <Routes>
-            <Route path="/" element={<Main />} />
-            <Route path="/chat/:id" element={<Chat />} />
-          </Routes>
-        </div>
+        <AppContent />
       </Router>
     </ChatProvider>
   );
 }
 
+export default App;

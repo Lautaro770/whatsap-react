@@ -21,7 +21,7 @@ function App() {
 
   const getAppClassName = () => {
     if (!isMobile) return 'app';
-    return pp mobile--view;
+    return "app mobile--view";
   };
 
   return (

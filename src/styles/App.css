@@ -23,6 +23,8 @@ body {
   margin: 0 auto;
   background-color: #FFFFFF;
   position: relative;
+  border: none;
+  outline: none;
 }
 
 /* ===== VISTA ESCRITORIO (768px+) ===== */
